@@ -2,7 +2,7 @@
 ## Wymagania
 Program został napisany w języku programowania Python v3.5.2. Do swojego poprawnego działania wymaga zainstalowanych bibliotek NumPy v1.12.1 oraz scikit-image v0.14. Program przyjmuje dwa argumenty: ścieżkę do katalogu z bazą obrazów liści oraz nazwę pliku wynikowego. Jeżeli nazwa pliku wynikowego nie zostanie podana, to wyliczone cechy zostaną zapisane w pliku o domyślnej nazwie ‘output.csv’.
 
-<code>python3 leafFeatureIdentification.py leafsnap-subset1/ output.csv</code>
+<code>python3 leafFeatureIdentification.py leafsnap-subset1/ output.csv</code></br>
 
 <small><b>Ryc. 1.</b> Przykład poprawnego uruchomienia programu.</small>
 
@@ -37,14 +37,14 @@ Trzy ostatnie cechy obliczane są dla 3 różnych parametrów erozji.
 
 Program klasyfikujący liście poza wyróżnionymi w punkcie pierwszym pakietów, wymaga dodatkowo zainstalowanej biblioteki scikit-learn v0.18.1. Program przyjmuje jeden argument: - ścieżkę do katalogu z bazą obrazów liści (rozszerzenie .jpg). Program na wyjściu wypisuje dla każdego pliku jego nazwę oraz przewidziany gatunek liścia.
 
-<code>python3 leafClassification.py leafsnap-subset1/</code>
+<code>python3 leafClassification.py leafsnap-subset1/</code></br>
 <small><b>Ryc. 2.</b> Przykład poprawnego uruchomienia programu klasyfikującego liście.</small>
 
-<code>ny1079-04-4.jpg acer_campestre
-wb1448-06-3.jpg ginkgo_biloba
-wb1001-08-3.jpg fagus_grandifolia
-pi0056-06-3.jpg ilex_opaca
-pi0046-03-3.jpg carya_glabra</code>
+<code>ny1079-04-4.jpg acer_campestre</br>
+wb1448-06-3.jpg ginkgo_biloba</br>
+wb1001-08-3.jpg fagus_grandifolia</br>
+pi0056-06-3.jpg ilex_opaca</br>
+pi0046-03-3.jpg carya_glabra</code></br>
 
 <small><b>Ryc. 3.</b> Przykładowe wyniki zwracane przez program klasyfikujący liście.</small>
 
