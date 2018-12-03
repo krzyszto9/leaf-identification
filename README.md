@@ -1,45 +1,44 @@
-# Opis dzia³ania programu rozpoznaj¹cego liœcie na obrazach
+# Opis dziaÅ‚ania programu rozpoznajÄ…cego liÅ›cie na obrazach
 ## Wymagania
-Program zosta³ napisany w jêzyku programowania Python v3.5.2. Do swojego poprawnego dzia³ania wymaga zainstalowanych bibliotek NumPy v1.12.1 oraz scikit-image v0.14. Program przyjmuje dwa argumenty: œcie¿kê do katalogu z baz¹ obrazów liœci oraz nazwê pliku wynikowego. Je¿eli nazwa pliku wynikowego nie zostanie podana, to wyliczone cechy zostan¹ zapisane w pliku o domyœlnej nazwie ‘output.csv’.
+Program zostaÅ‚ napisany w jÄ™zyku programowania Python v3.5.2. Do swojego poprawnego dziaÅ‚ania wymaga zainstalowanych bibliotek NumPy v1.12.1 oraz scikit-image v0.14. Program przyjmuje dwa argumenty: Å›cieÅ¼kÄ™ do katalogu z bazÄ… obrazÃ³w liÅ›ci oraz nazwÄ™ pliku wynikowego. JeÅ¼eli nazwa pliku wynikowego nie zostanie podana, to wyliczone cechy zostanÄ… zapisane w pliku o domyÅ›lnej nazwie â€˜output.csvâ€™.
 
 <code>python3 leafFeatureIdentification.py leafsnap-subset1/ output.csv</code>
 
-<small><b>Ryc. 1.</b> Przyk³ad poprawnego uruchomienia programu.</small>
+<small><b>Ryc. 1.</b> PrzykÅ‚ad poprawnego uruchomienia programu.</small>
 
-## Detekcja liœcia
+## Detekcja liÅ›cia
 
-W pierwszym etapie dzia³ania funkcji _leaf_detection_ analizowany obraz najpierw zmieniany jest za pomoc¹ funkcji _color.rgb2gray_ ze zdjêcia wielobarwnego na skalê szaroœci, nastêpnie obraz progowany jest w celu usuniêcia pikseli t³a, z wykorzystaniem funkcji _filters.threshold_mean_ z biblioteki _skimage_. Funkcja ta oblicza wartoœæ progowania na podstawie œredniej jasnoœci pikseli. Kolejnym krokiem jest etykietyzacja obrazu (_measure.label_ z biblioteki _skimage_) oraz usuniêcie obszarów zawieraj¹cych siê w odleg³oœci dziesiêciu procent (wysokoœci/d³ugoœci obrazu) od dolnej lub prawej krawêdzi. Zabieg ten powoduje usuniêcie skali, która mog³aby utrudniæ rozpoznanie liœcia. Po renumeracji etykiet nastêpuje obliczenie pola powierzchni i odleg³oœci od œrodka obrazu danych obszarów. Obliczone wartoœci s¹ normalizowane - najwiêksza wartoœæ pola powierzchni oraz najmniejsza odleg³oœæ od œrodka przyjmuj¹ wartoœæ 1. Nastêpnie dla ka¿dego obszaru odpowiadaj¹ce mu wartoœci s¹ sumowane i jako liœæ uznawany jest obszar o najwiêkszej sumie powy¿szych elementów. Normalizacja oraz wybór odpowiedniej etykiety przeprowadzane s¹ w funkcji _leaf_label_identification_, która jako wynik zwraca obraz zawieraj¹cy domniemany liœæ (jasnoœæ pikseli liœcia równa 255, natomiast t³a - 0).
+W pierwszym etapie dziaÅ‚ania funkcji _leaf_detection_ analizowany obraz najpierw zmieniany jest za pomocÄ… funkcji _color.rgb2gray_ ze zdjÄ™cia wielobarwnego na skalÄ™ szaroÅ›ci, nastÄ™pnie obraz progowany jest w celu usuniÄ™cia pikseli tÅ‚a, z wykorzystaniem funkcji _filters.threshold_mean_ z biblioteki _skimage_. Funkcja ta oblicza wartoÅ›Ä‡ progowania na podstawie Å›redniej jasnoÅ›ci pikseli. Kolejnym krokiem jest etykietyzacja obrazu (_measure.label_ z biblioteki _skimage_) oraz usuniÄ™cie obszarÃ³w zawierajÄ…cych siÄ™ w odlegÅ‚oÅ›ci dziesiÄ™ciu procent (wysokoÅ›ci/dÅ‚ugoÅ›ci obrazu) od dolnej lub prawej krawÄ™dzi. Zabieg ten powoduje usuniÄ™cie skali, ktÃ³ra mogÅ‚aby utrudniÄ‡ rozpoznanie liÅ›cia. Po renumeracji etykiet nastÄ™puje obliczenie pola powierzchni i odlegÅ‚oÅ›ci od Å›rodka obrazu danych obszarÃ³w. Obliczone wartoÅ›ci sÄ… normalizowane - najwiÄ™ksza wartoÅ›Ä‡ pola powierzchni oraz najmniejsza odlegÅ‚oÅ›Ä‡ od Å›rodka przyjmujÄ… wartoÅ›Ä‡ 1. NastÄ™pnie dla kaÅ¼dego obszaru odpowiadajÄ…ce mu wartoÅ›ci sÄ… sumowane i jako liÅ›Ä‡ uznawany jest obszar o najwiÄ™kszej sumie powyÅ¼szych elementÃ³w. Normalizacja oraz wybÃ³r odpowiedniej etykiety przeprowadzane sÄ… w funkcji _leaf_label_identification_, ktÃ³ra jako wynik zwraca obraz zawierajÄ…cy domniemany liÅ›Ä‡ (jasnoÅ›Ä‡ pikseli liÅ›cia rÃ³wna 255, natomiast tÅ‚a - 0).
 
-## Ekstrakcja cech liœcia z obrazów
+## Ekstrakcja cech liÅ›cia z obrazÃ³w
 
-Wszystkie funkcje wykorzystywane do detekcji cech liœcia pochodz¹ z biblioteki _skimage_, a dok³adniej z modu³u _measure.regionprops_. Cechy wybrane do charakteryzacji liœcia to:
+Wszystkie funkcje wykorzystywane do detekcji cech liÅ›cia pochodzÄ… z biblioteki _skimage_, a dokÅ‚adniej z moduÅ‚u _measure.regionprops_. Cechy wybrane do charakteryzacji liÅ›cia to:
 <ol>
-<li>area - liczba pikseli obrazu liœcia;</li>
-<li>bbox area - liczba pikseli bry³y brzegowej;</li>
-<li>perimeter - wielkoœæ obwodu liœcia;</li>
-<li>convex area - iloœæ pikseli najmniejszego zbioru wypuk³ego zawieraj¹cego obraz liœcia;</li>
-<li>ecceentricity - stosunek odleg³oœci ogniskowej (odleg³oœæ miêdzy punktami ogniskowymi) do osi g³ównej;</li>
-<li>eqivalent diameter - œrednica okrêgu o tym samym obszarze co obraz liœcia;</li>
-<li>extent - stosunek pikseli obrazu roœliny do liczby pikseli bry³y brzegowej;</li>
-<li>major axis length - d³ugoœæ osi g³ównej elipsy, która ma t¹ sam¹ wartoœæ znormalizowan¹ drugiego momentu centralnego co obraz liœcia;</li>
-<li>minor axis length - d³ugoœæ osi mniejszej elipsy, która ma t¹ sam¹ wartoœæ znormalizowan¹ drugiego momentu centralnego co obraz liœcia;</li>
-<li>solidity - stosunek iloœci pikseli obrazu liœcia do iloœci pikseli najmniejszego zbioru wypuk³ego zawieraj¹cego obraz;</li>
-<li>area_ratio - stosunek pola powierzchni liœcia po erozji do pola powierzchni liœcia przed erozj¹;</li>
-<li>perimeter_ratio - stosunek obwodu liœcia po erozji do pola powierzchni liœcia przed erozj¹;</li>
-<li>number_of_objects - liczba obszarów na jakie podzieli³ siê liœæ po erozji.</li></ol>
+<li>area - liczba pikseli obrazu liÅ›cia;</li>
+<li>bbox area - liczba pikseli bryÅ‚y brzegowej;</li>
+<li>perimeter - wielkoÅ›Ä‡ obwodu liÅ›cia;</li>
+<li>convex area - iloÅ›Ä‡ pikseli najmniejszego zbioru wypukÅ‚ego zawierajÄ…cego obraz liÅ›cia;</li>
+<li>ecceentricity - stosunek odlegÅ‚oÅ›ci ogniskowej (odlegÅ‚oÅ›Ä‡ miÄ™dzy punktami ogniskowymi) do osi gÅ‚Ã³wnej;</li>
+<li>eqivalent diameter - Å›rednica okrÄ™gu o tym samym obszarze co obraz liÅ›cia;</li>
+<li>extent - stosunek pikseli obrazu roÅ›liny do liczby pikseli bryÅ‚y brzegowej;</li>
+<li>major axis length - dÅ‚ugoÅ›Ä‡ osi gÅ‚Ã³wnej elipsy, ktÃ³ra ma tÄ… samÄ… wartoÅ›Ä‡ znormalizowanÄ… drugiego momentu centralnego co obraz liÅ›cia;</li>
+<li>minor axis length - dÅ‚ugoÅ›Ä‡ osi mniejszej elipsy, ktÃ³ra ma tÄ… samÄ… wartoÅ›Ä‡ znormalizowanÄ… drugiego momentu centralnego co obraz liÅ›cia;</li>
+<li>solidity - stosunek iloÅ›ci pikseli obrazu liÅ›cia do iloÅ›ci pikseli najmniejszego zbioru wypukÅ‚ego zawierajÄ…cego obraz;</li>
+<li>area_ratio - stosunek pola powierzchni liÅ›cia po erozji do pola powierzchni liÅ›cia przed erozjÄ…;</li>
+<li>perimeter_ratio - stosunek obwodu liÅ›cia po erozji do pola powierzchni liÅ›cia przed erozjÄ…;</li>
+<li>number_of_objects - liczba obszarÃ³w na jakie podzieliÅ‚ siÄ™ liÅ›Ä‡ po erozji.</li></ol>
 
-Trzy ostatnie cechy obliczane s¹ dla 3 ró¿nych parametrów erozji.
+Trzy ostatnie cechy obliczane sÄ… dla 3 rÃ³Å¼nych parametrÃ³w erozji.
 <br><br>
-<![endif]-->
 
-# Wybór i uczenie klasyfikatorów
+# WybÃ³r i uczenie klasyfikatorÃ³w
 
 ## Wymagania
 
-Program klasyfikuj¹cy liœcie poza wyró¿nionymi w punkcie pierwszym pakietów, wymaga dodatkowo zainstalowanej biblioteki scikit-learn v0.18.1. Program przyjmuje jeden argument: - œcie¿kê do katalogu z baz¹ obrazów liœci (rozszerzenie .jpg). Program na wyjœciu wypisuje dla ka¿dego pliku jego nazwê oraz przewidziany gatunek liœcia.
+Program klasyfikujÄ…cy liÅ›cie poza wyrÃ³Å¼nionymi w punkcie pierwszym pakietÃ³w, wymaga dodatkowo zainstalowanej biblioteki scikit-learn v0.18.1. Program przyjmuje jeden argument: - Å›cieÅ¼kÄ™ do katalogu z bazÄ… obrazÃ³w liÅ›ci (rozszerzenie .jpg). Program na wyjÅ›ciu wypisuje dla kaÅ¼dego pliku jego nazwÄ™ oraz przewidziany gatunek liÅ›cia.
 
 <code>python3 leafClassification.py leafsnap-subset1/</code>
-<small><b>Ryc. 2.</b> Przyk³ad poprawnego uruchomienia programu klasyfikuj¹cego liœcie.</small>
+<small><b>Ryc. 2.</b> PrzykÅ‚ad poprawnego uruchomienia programu klasyfikujÄ…cego liÅ›cie.</small>
 
 <code>ny1079-04-4.jpg acer_campestre
 wb1448-06-3.jpg ginkgo_biloba
@@ -47,22 +46,22 @@ wb1001-08-3.jpg fagus_grandifolia
 pi0056-06-3.jpg ilex_opaca
 pi0046-03-3.jpg carya_glabra</code>
 
-<small><b>Ryc. 3.</b> Przyk³adowe wyniki zwracane przez program klasyfikuj¹cy liœcie.</small>
+<small><b>Ryc. 3.</b> PrzykÅ‚adowe wyniki zwracane przez program klasyfikujÄ…cy liÅ›cie.</small>
 
-## Wybór i uczenie klasyfikatorów
+## WybÃ³r i uczenie klasyfikatorÃ³w
 
-Wœród dostêpnych klasyfikatorów w ramach pakietu _scikit-learn_ wybrano:
+WÅ›rÃ³d dostÄ™pnych klasyfikatorÃ³w w ramach pakietu _scikit-learn_ wybrano:
 
-<ol><li>KNeighborsClassifier - klasyfikacja przynale¿noœci na podstawie najbli¿szego s¹siedztwa;</li>
-<li>RandomForestClassifier - klasyfikacja przynale¿noœci na podstawie losowego zestawu danych (cech) z których tworzone s¹ zdekolerowane drzewa decyzyjne;</li>
-<li>DecisionTreeClassifier - klasyfikacja przynale¿noœci na podstawie drzewa decyzyjnego bazuj¹cego na zestawie danych (cech);</li>
-<li>MLPClassifier - klasyfikacja przynale¿noœci za pomoc¹ sieci neuronowych.</li></ol>
+<ol><li>KNeighborsClassifier - klasyfikacja przynaleÅ¼noÅ›ci na podstawie najbliÅ¼szego sÄ…siedztwa;</li>
+<li>RandomForestClassifier - klasyfikacja przynaleÅ¼noÅ›ci na podstawie losowego zestawu danych (cech) z ktÃ³rych tworzone sÄ… zdekolerowane drzewa decyzyjne;</li>
+<li>DecisionTreeClassifier - klasyfikacja przynaleÅ¼noÅ›ci na podstawie drzewa decyzyjnego bazujÄ…cego na zestawie danych (cech);</li>
+<li>MLPClassifier - klasyfikacja przynaleÅ¼noÅ›ci za pomocÄ… sieci neuronowych.</li></ol>
 
 <img src="plots.png">
 
-<small><b>Ryc. 4.</b> Wykres pokazuj¹cy zmianê wartoœci najlepszej klasyfikacji w zale¿noœci od iloœci najkorzystniejszych cech wybranych w oparciu o wartoœæ ANOVA F-value.</small>
+<small><b>Ryc. 4.</b> Wykres pokazujÄ…cy zmianÄ™ wartoÅ›ci najlepszej klasyfikacji w zaleÅ¼noÅ›ci od iloÅ›ci najkorzystniejszych cech wybranych w oparciu o wartoÅ›Ä‡ ANOVA F-value.</small>
 
-Po wykonanych testach najlepszym klasyfikatorem okaza³ siê klasyfikator lasu losowego (_RandomForestClassifier_)  dla przetestowanych parametrów:
+Po wykonanych testach najlepszym klasyfikatorem okazaÅ‚ siÄ™ klasyfikator lasu losowego (_RandomForestClassifier_)  dla przetestowanych parametrÃ³w:
 - warm_start_ - False;
 - min_samples_leaf_ -  1;
 - max_features_ -  log2;
@@ -70,5 +69,5 @@ Po wykonanych testach najlepszym klasyfikatorem okaza³ siê klasyfikator lasu los
 - bootstrap_ -  False;
 - n_estimators_ -  27.
 
-Pozosta³e parametry przyjmowa³y wartoœci domyœlne. Klasyfikator wykorzystuje wszystkie dostêpne dane.
+PozostaÅ‚e parametry przyjmowaÅ‚y wartoÅ›ci domyÅ›lne. Klasyfikator wykorzystuje wszystkie dostÄ™pne dane.
 
