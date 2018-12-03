@@ -40,11 +40,11 @@ Program klasyfikujący liście poza wyróżnionymi w punkcie pierwszym pakietów
 <code>python3 leafClassification.py leafsnap-subset1/</code></br>
 <small><b>Ryc. 2.</b> Przykład poprawnego uruchomienia programu klasyfikującego liście.</small>
 
-<code>ny1079-04-4.jpg acer_campestre</br>
-wb1448-06-3.jpg ginkgo_biloba</br>
-wb1001-08-3.jpg fagus_grandifolia</br>
-pi0056-06-3.jpg ilex_opaca</br>
-pi0046-03-3.jpg carya_glabra</code></br>
+<code><pre>ny1079-04-4.jpg acer_campestre
+wb1448-06-3.jpg ginkgo_biloba
+wb1001-08-3.jpg fagus_grandifolia
+pi0056-06-3.jpg ilex_opaca
+pi0046-03-3.jpg carya_glabra</pre></code></br>
 
 <small><b>Ryc. 3.</b> Przykładowe wyniki zwracane przez program klasyfikujący liście.</small>
 
